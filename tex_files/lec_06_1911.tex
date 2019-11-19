@@ -1,0 +1,150 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция АиСД 19.11}
+
+\begin{document}
+
+\section{Простые структуры данных}
+
+\paragraph{Требования к структуре данных:}
+\begin{itemize}
+    \item От СД мы хотим обработку каких-то наших запросов.
+    \item online-offline. Бывает, что мы знаем все запросы, бывает, что мы узнаем запрос только тогда, когда отвечаем на предыдущий
+    \item При  обсуждении времени работы отделяется время на препроцессинг и на последующие ответы на запросы (query).
+\end{itemize}
+
+\subsection {Data structure / interface}
+\hspace{\fill}
+\textit{Структура данных} --- это какой-то математический объект, который умеет отвечать на наши запросы конкретным способом. Красно-черное дерево --- это структура данных.
+\\
+\textit{Интерфейс} --- это объект, с которым может взаимодействовать пользователь, который каким-то образом умеет отвечать на наши запросы (пользователю все равно, как, его волнует только то, что интерфейс реализует, и за какое время(память) он это делает). $std::set$ --- это интерфейс.
+\\
+\textit{Итератор} --- это специальный объект, отвечающий непосредственно за ячейку в структуре данных. Для того, чтобы удалить элемент, мы должны иметь итератор на этот элемент. Т.е. удаление по ключу работает за $O(erase)$, а удаление по значению за $O(find) + O(erase)$
+
+\paragraph{list}
+Списки бывают двусвязными, односвязными, циклическими. У каждого элемента есть ссылка на следующий (и иногда на предыдущий), а также есть отдельный глобальный указатель на начало списка.
+
+
+\paragraph{stack}
+Стек --- структура данных, которая умеет делать добавление в конец, удаление из конца, взятие последнего элемента, за $O(1)$.
+
+\paragraph{queue}
+Очередь --- структура данных, которая умеет делать добавление в конец, удаление из начала, взятие первого элемента, за $O(1)$.
+
+\paragraph{deque}
+Двусторонняя очередь --- структура данных, которая умеет делать добавление, удаление и взятие элемента с любого конца последовательности, за $O(1)$.
+
+\paragraph{priority\_queue}
+Очередь с приоритетами ака куча --- структура данных, которая умеет делать добавление, удаление, и быстрые операции с минимумом, представляющая из себя дерево с условием $parent(u) = v \rightarrow value(v) \le value(u)$.
+
+
+Все эти структуры реализуются как на массиве (храним последовательную память и указатели на начало/конец), так и на списках (что на самом деле является тем же самым, что и на массиве, просто ссылка вперед эквивалентна $a_i \rightarrow a_{i + 1}$ в терминологии массивов, \textit{прим. автора}).
+
+Структура данных на массиве кратно быстрее аналогичной на ссылках, потому что массив проходится по кэшу и не требует дополнительной памяти.
+
+\begin{center}
+\begin{tabular}{c c c c c c c c c}
+data structure & add & delete & pop & find & top & build & min & get by index\\
+stack & $O(1)$ & - & $O(1)$ & - & $O(1)$ & $O(n)$ & $O(n)$ & -\\
+dynamic array & $O(1)$ & $O(n)$ & $O(1)$ & $O(n)$ & $O(1)$ & $O(n)$ & $O(n)$ & $O(1)$ \\
+queue & $O(1)$ & - & $O(1)$ & - & $O(1)$ & $O(n)$ & $O(n)$ & -\\
+deque & $O(1)$ & - & $O(1)$ & - & $O(1)$ & $O(n)$ & $O(n)$ & -\\
+linked list & $O(1)$ & $O(1)$ & $O(1)$ & $O(n)$ & $O(1)$ & $O(n)$ & $O(n)$ & $O(n)$\\
+sorted array& $O(n)$ & $O(n)$ & $O(1)$ & $O(\log n)$ & $O(1)$ & $O(n \log n)$ & $O(1)$ & $O(1)$ \\
+priority\_queue& $O(\log n)$ & $O(\log n)$ & $O(\log n)$ & $O(1)$ & $O(n)$ & $O(1)$ & -
+\end{tabular}
+\end{center}
+
+\subsection{Двоичная куча}
+
+Реализация двоичной кучи на массиве --- создаем массив размера $sz$, и создаем ребра $i \rightarrow 2 \cdot i,\ i \rightarrow 2 \cdot i + 1$.
+
+От такой кучи мы хотим:
+\begin{itemize}
+\item insert(x)
+\item get\_min()
+\item extract\_min()
+\item erase
+\item change = \{decrease\_key, increase\_key\}
+\end{itemize}
+
+Для такой кучи мы реализуем $sift\_up(x),\ sift\_down(x)$ --- просеивание вниз и вверх. Процедура должна устранить конфликты с элементом $x$. Остальные операции умеют реализовываться через нее. 
+
+$$insert = add\_leaf + sift_up$$
+
+$$extract\_min = increase\_key(root, \infty) + sift\_down + swap(key[size], key[idx[\infty]]) + decrease\_size$$
+
+$$erase = decrease\_key(-\infty) + extract\_min$$
+
+Отдельно отметим построение кучи за $O(n)$ --- sift\_down поочередно для всех элементов $n,~n~-~1,~\dots,~1$.
+
+\begin{minted}{c++}
+void sift_up(int v) { // v >> 1 <=> v / 2
+    if (key[v] < key[v >> 1]) {
+        swap(key[v], key[v >> 1]);
+        sift_up(v >> 1);
+    }
+}
+\end{minted} 
+
+\begin{minted}{c++}
+void sift_down(int v, int size) { // indexes [1, size]
+    if (2 * v > size) {
+        return;
+    }
+    int left = 2 * v;
+    int right = 2 * v + 1;
+    int argmin = v;
+    if (key[v] > key[left]) {
+        argmin = left;
+    }
+    if (right <= size && key[right] < key[argmin]) {
+        argmin = right;
+    }
+    if (argmin == v) {
+        return;
+    }
+    swap(key[v], key[argmin]);
+    sift_down(argmin, size);
+}
+\end{minted}
+
+\end{document}
