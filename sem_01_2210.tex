@@ -1,0 +1,92 @@
+\documentclass{article}
+
+\usepackage[top=0.6in, bottom=0.75in, left=0.625in, right=0.625in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage[russianb]{babel}
+\usepackage{hyperref}
+% \usepackage{minted}
+\usepackage{color}
+\usepackage{fancyhdr}
+
+
+\newcommand{\R}{\mathbb{R}}  
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\tu}[1]{\underline{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\aliq}{\mathrel{\raisebox{-0.5ex}{\vdots}}}
+\newcommand{\mylim}[2]{\lim_{#1 \to #2}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\brackets}[1]{\left({#1}\right)}
+\newcommand{\sqbrackets}[1]{\left[{#1}\right]}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\ifx\pdfoutput\undefined
+\usepackage{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Макоян Артем, ПМИ 191-1, @MakArtKar, \href{http://github.com/MakArtKar}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/MakArtKar}{\textcolor{blue}{codeforces}}, \href{vk.com/makartkar}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Семинар по АиСД 22.10}
+
+\begin{document}
+
+
+\large
+
+t(n, input) - время работы алгоритмы при входных данных input размера n. Тогда время работы алгоритма $t(n) = max_{input} t(n, input)$. 
+
+$t(n) = O(f(n)) \Leftrightarrow \exists c > 0, \; N > 0 : \forall n > N \; t(n) \leq c \cdot f(n)$.
+
+$t(n) = o(f(n)) \Leftrightarrow \forall c > 0, \exists N : \forall n > N \; t(n) \leq c \cdot f(n)$.
+
+$t(n) = \Omega(f(n)) \Leftrightarrow \exists c > 0, \; \forall N, \; \exists n > N, \; input : t(n, input) \geq c \cdot f(n) $.
+
+$t(n) = \omega(f(n)) \Leftrightarrow \forall c > 0, \; \forall N, \; \exists n > N, \; input : t(n, input) \geq c \cdot f(n) $.
+
+$t(n) = \theta(f(n)) \Leftrightarrow t(n) = \Omega(f(n)), \; t(n) = O(f(n))$.
+
+Алгоритм является \tu{полиномиальным}, если $t(input) = O(\abs{input}^k)$. $\abs{input}$ - битовая длина.
+
+\tu{Сильно полиномиальный алгоритм} - $t(n) = O(Poly(n))$ - string-poly
+
+\tu{Слабо полиномиальный алгоритм} - $O(Poly(n, \log{C}))$ - weak-poly
+
+\tu{Псевдо полиномиальный алгоритм} - $O(Poly(n, C))$ - pseudo-poly
+
+
+\end{document}

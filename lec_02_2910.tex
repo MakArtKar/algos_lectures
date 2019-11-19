@@ -1,0 +1,115 @@
+\documentclass{article}
+
+\usepackage[top=0.6in, bottom=0.75in, left=0.625in, right=0.625in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage[russianb]{babel}
+\usepackage{hyperref}
+% \usepackage{minted}
+\usepackage{color}
+\usepackage{fancyhdr}
+
+
+\newcommand{\R}{\mathbb{R}}  
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\tu}[1]{\underline{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\aliq}{\mathrel{\raisebox{-0.5ex}{\vdots}}}
+\newcommand{\mylim}[2]{\lim_{#1 \to #2}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\brackets}[1]{\left({#1}\right)}
+\newcommand{\sqbrackets}[1]{\left[{#1}\right]}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\ifx\pdfoutput\undefined
+\usepackage{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Макоян Артем, ПМИ 191-1, @MakArtKar, \href{http://github.com/MakArtKar}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/MakArtKar}{\textcolor{blue}{codeforces}}, \href{vk.com/makartkar}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция по АиСД 29.10}
+
+\begin{document}
+
+$ \xi : \Omega \rightarrow \R $ - случайная величина. $ \xi(w) $ - значение,  $ w \in \Omega $. \\
+\tu{Пример:} Есть 5 марок автомобиля, их стоимости и их количества.
+A - 1000 - 100; B - 2000 - 5; C - 3000 - 5; D - 2000  - 20; E - 1500 - 30;
+Тогда нас интересуют $P(\xi = 1000) = \dfrac{100}{160}, P(\xi = 1500) = \dfrac{30}{160}, P(\xi = 2000) = \dfrac{25}{160}, P(\xi = 3000) = \dfrac{5}{160} $.\\
+
+\tu{Матожидание} $E(\xi) = \sum_{w \in \Omega} \xi(w) \cdot P(w) = \sum_{x} x \cdot P(\xi = x) $. \\
+
+\tu{Индикаторная случайная величина:}
+$I_A = 
+\begin{cases}
+1, w \in A \\
+0, w \notin A \\
+\end{cases}
+$Тогда $E(I_A) = P(A)$. \\
+
+Пусть есть 2 случайной величины $\xi_1$ и $\xi_2$. Тогда $E(\alpha \xi_1 + \beta \xi_2) = \alpha E(\xi_1) + \beta E(\xi_2)$.\\
+$E(\alpha \xi_1 + \beta \xi_2) = \sum_{w \in \Omega}(\alpha \xi_1(w) \cdot P(w) + \beta \xi_2(w) \cdot P(w)) = \alpha \sum_{w \in \Omega} \xi_1(w) \cdot P(w) + \beta \sum_{w \in \Omega} \xi_2(w) \cdot P(w) = \alpha E(\xi_1) + \beta E(\xi_2)$ \\
+
+Две случайные величины называются \tu{независимые}, если $ \forall x, y : P(\xi_1 = x $ и $ \xi_2 = y) = P(\xi_1 = x) \cdot P(\xi_2 = y) $. \\
+$n$ случайных величин называются \tu{попарно независимыми}, если любые 2 величины независимы. \\
+\ti{независимы в совокупности - см семинар} \\
+
+$\xi_1$ и $\xi_2$ - случайные независимые величины. Тогда $E(\xi_1 \xi_2) = E(\xi_1)E(\xi_2)$. \\
+$E(\xi_1 \xi_2) = \sum_{w \in \Omega} \xi_1(w) \xi_2(w) P(w) = \sum_{x} x \cdot P(\xi_1 \xi_2 = x) = \sum_{(u,v)} uv \cdot P(\xi_1 = u $ и $ \xi_2 = v) = [\xi_1 $ и $ \xi_2 $ независимы$] = \sum_{(u, v)} uv \cdot P(\xi_1 = u) \cdot P(\xi_2 = v) = (\sum_{u} u \cdot P(\xi_1 = u)) \cdot (\sum_{v} v \cdot P(\xi_2 = v)) = E(\xi_1)E(\xi_2)$. \\
+
+\tu{Задача о назначениях}. Есть $n$ работников и $n$ работ. Есть таблица, где $a_{ij}$ - сколько i-ый работник берет за j-ую работу. Нужно распределить работников по работам так, чтобы суммарная плата за все работы была миниальна. \\
+Оценим матожидание затрат при случайном решении. $A_{ij}$ - событие, когда i-ый работник делает j-ую работу. $\xi = \sum_{(i,j)} I_{A_{ij}} \cdot a_{ij}$. Тогда $E(\xi) = \sum_{(i,j)} E(I_{A_{ij}} = \sum_{(i,j)} a_{ij}P(A{ij}) = \sum_{(i,j)} a_{ij} \cdot \frac{1}{n} $. \\
+
+\tu{Найти максимальный разрез в неориентированном невзвешанном графе}. \\
+Будем строить случайный разрез(каждую вершину либо в $A$, либо в $\stackrel{-}{A}$). Тогда $\xi$ - величина нашего разреза. $\xi = \sum_{e \in E(G)} I_{B_{e}}$, где $B_e$ - событие, когда $e$ лежит в разрезе. $P(e \in $разрез$) = \frac{1}{2}$. Тогда $E(\xi) = E(\sum_{e \in E(G)} I_{B_E}) = \sum E(I) = \dfrac{1}{2} \abs{E(G)}$. \\
+
+Есть перестановка $ p_1 \dots p_n$. Алгоритм жадно набирает возрастающую подпоследовательность. Какое матожидание длины этой подпоследовательности? \\
+Событие $A_i$ - алгоритм возьмет $p_i$. $E(\xi) = E(\sum I_{A_i}) = \sum P(A_i) $. $P(A_i) = P(\forall j < i : p_j < p_i) = \frac{1}{i}$. Тогда $E(\xi) = \sum_{i = 1}^n \frac{1}{i} = \Theta(log n)$. \\
+
+\tu{Дисперсия} $D(\xi) = \sum_{w \in \Omega} P(w)(\xi(w) - E(\xi))^2$.\\
+Свойства:
+
+\begin{itemize}
+	\item $D(\xi_1 + \xi_2) = D(\xi_1) + D(\xi_2)$, $\xi_1$ и $\xi_2$ независимы \\
+	\item $D(\lambda \xi_1) = \lambda^2 D(\xi_1) $ \\
+\end{itemize}
+
+\tu{Неравенство Маркова}. $\xi : \Omega \rightarrow \R_+$. $P(\xi(w) \geq E(\xi) \cdot k) \leq \dfrac{1}{k} $. \\
+
+\tu{Неравенство Чебышева}. $\xi : \Omega \rightarrow \R$. $P(\abs{\xi - E(\xi)} \leq \alpha) \leq \dfrac{D(\xi)}{\alpha^2}$.
+
+
+\end{document}

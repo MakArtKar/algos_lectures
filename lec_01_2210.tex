@@ -1,0 +1,99 @@
+\documentclass{article}
+
+\usepackage[top=0.6in, bottom=0.75in, left=0.625in, right=0.625in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage[russianb]{babel}
+\usepackage{hyperref}
+% \usepackage{minted}
+\usepackage{color}
+\usepackage{fancyhdr}
+
+
+\newcommand{\R}{\mathbb{R}}  
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\tu}[1]{\underline{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\aliq}{\mathrel{\raisebox{-0.5ex}{\vdots}}}
+\newcommand{\mylim}[2]{\lim_{#1 \to #2}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\brackets}[1]{\left({#1}\right)}
+\newcommand{\sqbrackets}[1]{\left[{#1}\right]}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\ifx\pdfoutput\undefined
+\usepackage{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Макоян Артем, ПМИ 191-1, @MakArtKar, \href{http://github.com/MakArtKar}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/MakArtKar}{\textcolor{blue}{codeforces}}, \href{vk.com/makartkar}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция по АиСД 22.10}
+
+\begin{document}
+
+
+\large
+
+\tu{Формула оценки}: \tb{0.25 дз + 0.3 контест + 0.15 кр + 0.3 экзамен + Бонус}
+
+\tu{Домашние задания}: сдавать устно(раз в неделю ассисты устраивают доп пару, запись онлайн) или latex, дедлайн 10-21 день.
+
+\tu{Контесты}: Длинные(код ревью), короткие(раз в 2 недели), неточные, бонусные(идет к бонусу). Штрафов нет.
+
+\tu{Контрольные работы}: раз в модуль, тестовые вопросы.
+
+\tu{Бонусы}: бонусные контесты, ACM, работа на семинаре.
+
+\tu{Материалы}:
+\begin{itemize}
+  \item Кормен
+  \item en.wikipedia
+  \item викиконспекты
+  \item e-maxx
+  \item Корте-Фанен Коммбинаторная оптимизация
+\end{itemize}
+
+\tb{Теория вероятности}.
+$(\Omega, 2^{\Omega}, P)$ - вероятностная пространство.\\
+$A \subset \Omega$, $P(A) = \sum_{w \in A} P(w)$. \\
+\tu{Def}: $A, B$ - события, $P(B) > 0$. \tb{P(A|B)} - вероятность события A, если наступило событие B. Тогда $P(A|B) = \dfrac{\sum_{w \in A \cap B} P(w)}{\sum_{w \in B} P(w)} = \dfrac{P(A \cap B)}{P(B)}$. \\
+\tu{Def}: A и B независимые, если P(A|B) = P(A). \\
+Тогда, если A и B независимые, то $P(A \cap B) = P(A) \cdot P(B)$. \\
+
+
+
+\end{document}

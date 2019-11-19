@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Алгоритмы 14.11}
+
+\begin{document}
+
+\section{Сортировки основанные на внутреннем виде данных}
+
+Имеем $n$ чисел $[0, U - 1],\ U = 2^w$, числа укладываются в RAM-модель
+
+\paragraph{Сортировка подсчетом}
+
+Заводим массив $cnt[U],\ cnt[x] = |\{i : a_i = x\}|$. Дальше переводим $count \rightarrow pref,\ pref[x] = pref[x - 1] + count[x]$
+
+$O(n + U)$
+
+\paragraph{Поразрядная сортировка}
+
+$b_{ij}$---$j$-й бит $i$-го числа. (Сортируем бинарные строки длины $w$)
+
+Поочередно сортируем строки, разбивая их на классы эквивалентности по $2^{iter}$ последним символам. После чего мы стабильно сортируем по $(iter+1)$-му символу. 
+
+$O(\log_n U n)$
+
+\paragraph{Bucket sort}
+
+Разбиваем множество на корзины, каждой корзине соответствует отрезок. В каждой корзине запускаемся рекурсивно. 
+
+$O(n \log U)$
+
+В продакшне используют первую пару итераций, чтобы сильно снизить размерность на реальных данных.
+
+Пусть мы хотим отсортить равновероятные числа из  $[0, 1]$. В каждом бакете отсортируем за квадрат. Получим $O(n)$. 
+
+$$t(n) \le \rangesum{i=1}{n} c \cdot (1 + E (cnt_i)^2) \le c \cdot n + c \cdot \rangesum{i=1}{n} E (cnt_i^2) = $$
+$$ = c \cdot n + c \cdot \rangesum{i=1}{n} \rangesum{j=1}{n} E I_{A_{ij}} = c \cdot n + c \cdot n^2 \cdot \frac{1}{n} \le 2 \cdot c \cdot n$$
+
+\section{Иерархия памяти}
+
+Нас интересует задержка (latency), пропускная способность (throughput). Подгрузка $x$ данных занимает $l + \frac{x}{t}$
+
+От долгой к быстрой
+\begin{enumerate}
+\item external machine / internet
+\item HDD
+\item SSD
+\item RAM
+\item L3
+\item L2
+\item L1
+\item registers
+\end{enumerate}
+
+\section{Алгоритмы во внешней памяти}
+
+$n$ --- размер задачи
+
+$M$ --- размер $RAM$
+
+$B$ --- блок данных
+
+$B \ll M \ll n$
+
+$\log n \ll B$
+
+$B < \sqrt{M}$ (но это неявно и не факт)
+
+\paragraph{Mergesort во внешней памяти}
+
+Обычный mergesort, но три типа событий в $merge$:
+\begin{enumerate}
+    \item Кончился первый буфер --- подгружаем новый
+    \item Кончился второй --- аналогично
+    \item Кончился буфер для слияния --- выписываем обратно в RAM и сбрасываем
+\end{enumerate}
+
+$O(\frac{n}{B} \log n) \rightarrow O(\frac{n}{B} \log {\frac{n}{B}}) \rightarrow O(\frac{n}{B} \log_{\frac{M}{B}} {\frac{n}{B}})$
+
++2 идеи: \begin{enumerate}
+\item Дошли до размера $M$ --- явно посортим в RAM
+\item Можем сливать сразу $\frac{M}{B}$ массивов
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,114 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+% \usepackage{minted}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция по АиСД 12.11}
+
+\begin{document}
+
+Способы оценки времени работы:
+\begin{itemize}
+\item Прямой учет
+
+\item Рекурсивная оценка
+
+\item Амортизационный анализ
+\end{itemize}
+
+\paragraph{Прямой учет}
+
+Время работы строчки --- произведение верхних оценок по всем строчкам-предкам нашей.
+
+К примеру
+
+\begin{verbatim}
+while (!is_sorted()) { // O(# inversions) = O(n^2)
+    for (int i = 0; i + 1 < n; i++) { // O(n) * O(parent) = O(n^3)
+        if (a[i] > a[i + 1]) {
+            swap(a[i], a[i + 1]); // O(n^3)
+        }
+    }
+}
+\end{verbatim	}
+
+\paragraph{Рекурсивная оценка}
+
+Пример --- сортировка слиянием
+
+Нас интересует две вещи: инвариант и переход. Для оценки времени используем рекурренту вида $T(n) = O(f(n)) + \rangesum{n' \in calls}{} T(n')$ 
+
+При этом если мы доказываем время работы, то показываем $T(n) \le c \cdot f(n)$, зная, что для $n'\ \exists c:\ T(n') \le c \cdot f(n)$
+
+Важно, что $c$  глобальное и не должно увеличиваться в ходе доказательства
+
+
+\paragraph{stable sort}
+Делает сортировку, не меняя порядок равных элементов относительно исходной последовательности. Merge-sort стабилен.
+\paragraph{inplace-algorithm}
+Не требует дополнительной памяти и делает все прямо на данной памяти (у нас есть $\log n$ памяти на рекурсию). Quick-sort inplace.
+
+\paragraph{Время работы qsort}
+
+$$T(n) = \max_{input} average_{rand} t(input, rand) = \max_{|input|=n} E t(input)$$
+
+$$T(n) \le \Theta(n) + \frac{1}{n} \rangesum{k=0}{n-1} (T(k + 1) + T(n - k)) \le \Theta(n) + \frac{2}{n} \cdot \rangesum{k=1}{n} T(k - 1) \le a \cdot n + \frac{2}{n} \rangesum{k=1}{n} c \cdot (k - 1) \cdot \log (k - 1) \le$$
+
+$$\le a \cdot n + \frac{2}{n} \rangesum{k=1}{\frac{n}{2}} c \cdot (k - 1) \cdot \log n - \frac{2}{n} \rangesum{k=1}{\frac{n}{2}} c \cdot (k - 1) + \frac{2}{n} \rangesum{k=\frac{n}{2} + 1}{n} c \cdot (k - 1) \cdot \log n \le$$
+
+$$\le a \cdot n + \frac{2}{n} \cdot n^2 \cdot \log n - \frac{2c}{n} \cdot \frac{(n - 2)^2}{4} \le a \cdot n + cn \log n - \frac{c (n - 2)}{4} \le cn \log n$$
+
+$$\frac{c (n - 2)}{4} \ge a \cdot n$$
+
+$$c \cdot n - 2c \ge 4 \cdot a \cdot n$$
+
+$$c \ge \frac{4 \cdot a \cdot n}{(n - 2)}$$, что верно для достаточно больших $n$.
+
+\paragraph{Ограничение на число сравнений в сортировке}
+
+Бинарные сравнения на меньше.
+
+Рассмотрим дерево переходов. Для перестановки есть хотя бы один лист --- листьев котя бы $n!$
+
+$$L(T) \le 2^x, d(T) \le x$$, если $x$ --- ответ
+
+
+$$L(T) \ge n!$$
+
+$$d(T) \ge \log n! \ge \log{\frac{n}{2}}^{\frac{n}{2}} = \log 2^{(\log \frac{n}{2}) \cdot \frac{n}{2}} = \frac{n}{2} \cdot \log \frac{n}{2} = \Omega (n \log n)$$
+
+\end{document}

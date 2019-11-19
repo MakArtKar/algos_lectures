@@ -1,0 +1,144 @@
+\documentclass{article}
+
+\usepackage[top=0.6in, bottom=0.75in, left=0.625in, right=0.625in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage[russianb]{babel}
+\usepackage{hyperref}
+% \usepackage{minted}
+\usepackage{color}
+\usepackage{fancyhdr}
+
+
+\newcommand{\R}{\mathbb{R}}  
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\tu}[1]{\underline{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\aliq}{\mathrel{\raisebox{-0.5ex}{\vdots}}}
+\newcommand{\mylim}[2]{\lim_{#1 \to #2}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\brackets}[1]{\left({#1}\right)}
+\newcommand{\sqbrackets}[1]{\left[{#1}\right]}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\ifx\pdfoutput\undefined
+\usepackage{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция по АиСД 05.11}
+
+\begin{document}
+
+
+\textbf{Модели}
+
+RAM-модель (Random Access Machine)
+Вопросы, возникающие при создании модели
+\begin{enumerate}
+\item адресация 
+\item какие инструкции
+\item рекурсия
+\item где лежат инструкции
+\item размер данных 
+\item кол-во памяти
+\item случайность
+\end{enumerate}
+
+\paragraph{Адресация}
+
+Есть ячейки, в которых можно хранить целые числа (ограничения на $MAXC$ разумные, и на них введена неявная адресация
+
+\textit{Замечание.} Явная адресация --- при создании элемента получаем адрес и можем пользоваться только этим адресом. Неявно --- можем получать адреса каким-то своим образом, к примеру, $ptr + 20$.
+
+\paragraph{Кол-во памяти}
+
+Неявное соглашение RAM --- время работы не меньше памяти. По дефолту считаем, что мы его инициализируем мусором
+
+\paragraph{Где инструкции}
+
+Хранить инструкции можно в памяти и где-то снаружи. Мы будем хранить снаружи (внутри --- RASP-модель). Иначе говоря, инструкции и данные отделены. 
+
+
+\paragraph{Какие инструкции}
+В нашей модели есть инструкции следующих типов: 
+
+\begin{itemize}
+\item работа с памятью
+\item ветвление
+\item передача управления (=$goto$), 
+\item арифметика (at least $a + b, a - b, \frac{a}{b}, \cdot, mod, \lfloor \frac{a}{b} \rfloor$)
+\item сревнения (at least $a < b, a > b, a \le b, a \ge b, a = b, a \neq b$)
+\item логические (at least $\land, \lor, \oplus, \lnot$)
+\item битовые операции ($>>, <<, \&, |, \sim, \oplus$)
+\item математические функции (опять-таки, в рамках разумного)
+\item rand
+\end{itemize}
+
+Все инструкции работают от конечного разумного числа операндов (не умеем в векторные операции)
+
+\paragraph{Размер данных}
+
+$\exists~C, k~:~ C \cdot A^k \cdot n^k$ --- верхнее ограничение на величины промежуточных вычислений.
+
+\paragraph{Рекурсия}
+
+Рекурсия всегда линейна по памяити относительно глубины.
+
+\paragraph{Случайность}
+
+Мы считаем, что у нас есть абсолютно рандомная функция. Будем полагать, что у нас есть источник энтропии, выдающий случайности в промежутке $[0, 1]$.
+
+\textbf{Время работы.} \begin{itemize}
+\item наихудшее --- $t = \displaystyle\max_{input, random} t(input, random)$
+\item наилучшее --- $t = \displaystyle\max_{input} \displaystyle\min_{random} t(input, random)$
+\item ожидаемое --- $E\ t = \displaystyle\max_{input} {Average}_{random} t(input, random)$
+\item на случайных данных --- $t = Average_{input} Average_{random} t(input, random)$
+\end{itemize}
+
+
+\textbf{Алгоритмы}
+
+Методы доказательства корректности алгоритма.
+\begin{enumerate}
+    \item индукция
+    \item инвариант
+    \item от противного
+\end{enumerate}
+
+\end{document}
