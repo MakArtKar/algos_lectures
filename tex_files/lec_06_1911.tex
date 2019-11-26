@@ -110,7 +110,7 @@ priority\_queue& $O(\log n)$ & $O(\log n)$ & $O(\log n)$ & $O(1)$ & $O(n)$ & $O(
 
 $$insert = add\_leaf + sift_up$$
 
-$$extract\_min = increase\_key(root, \infty) + sift\_down + swap(key[size], key[idx[\infty]]) + decrease\_size$$
+$$extract\_min = swap(root, last) + last -= 1 + sift_down(root)$$
 
 $$erase = decrease\_key(-\infty) + extract\_min$$
 
