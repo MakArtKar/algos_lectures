@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция АиСД 03.12}
+
+\begin{document}
+
+\paragraph{Хэширование}
+
+Есть задача сравнения объектов:
+
+$$U = \{objects\},\ u, v \in U:\ u \neq v?$$
+
+Введем функцию $h:\ U \rightarrow \mathbb{Z}_m$, такую что $\forall\ u, v \in U:\ u \sim v \rightarrow h(v) = h(u)$. Обычно $m \ll |U|$.
+
+Зачем юзать хэши, а не наивное сравнение?
+\begin{itemize}
+\item Бывает много сравнений, и мы не хотим дублировать вычисления
+\item Безопасность
+\item Для некоторых хешей верно, что $h(f(v, u)) = g(h(v), h(u))$. То есть можно вычислить хэш от некоего объекта, пользуясь уже посчитанными хэшами для других объектов.
+\item Иногда мы сравниваем объекты не на равенство, а на изоморфность.
+\item Сравнивать объекты бывает дорого
+\end{itemize}
+
+Требования к хэшу:
+\begin{itemize}
+    \item вычислим за линейное время
+    \item детерменирован
+    \item семейство хэш-функций $\mathbb{H}$ (и можем взять сколько угодно оттуда)
+    \item равномерность $\forall_{v \neq u} v,\ u:\ p_{h \in \mathbb{H}}(h(u) = h(v)) \simeq \frac{1}{m}$
+    \item масштабируемость
+    \item необратимость
+    \item (\textit{optional}) лавинный эффект (при маленьком изменении объекта хэш меняется сильно) 
+\end{itemize}
+
+Важно, что мы хотим брать случайную функцию из семейства $\mathbb{H}$ на момент старта программы, потому что псевдослучайная функция на самом деле нам дает детерменированный алгоритм, который неверен.
+
+\paragraph{Идеальная хэш-функция}
+
+Так как объектов счетно, то отсортируем их, далее для каждого объекта запомним случайную величину от 1 до $m$ (или даже можем запоминать ее лениво!).
+
+\paragraph{Полиномиальный хэш}
+
+Сводим объекты к строкам и хэшируем строки:
+
+$$s = c_0c_2c_3 \dots c_{n-1},\ c_i > 0$$
+
+$$h_b(s) = \rangesum{i=0}{n-1} c_i \cdot b^i\ (mod\ m)$$
+
+$$p_b(h_b(s_1) = h_b(s_2)) \le \frac{n}{m}\ \text{для фиксированного m}$$
+
+Доказательство: Рассмотрим функцию как многочлен, теперь для равных функций смотрим на то, равна ли разность многочленов нулю для какого-то $b$. У многочлена от $b$ степень равна $n$, а вероятность попасть в конкретный модуль $\frac{1}{m}$.
+
+$$h(s_1 + s_2) = h(s_1) + h(s_2) \cdot b^{|s_1|}$$
+
+\end{document}
