@@ -74,7 +74,7 @@
 Вершин в биномиальной кучи $2^n$, на $k$-ом слое $C_n^k$ вершин. Из каждой вершины храним ребро в старшего сына, в предка и в следующего брата. $B_k = $ merge$(B_{k-1}, B_{k-1})$. %вставить картинку 
 Заметим, что merge деревьев одного ранга работает за O(1). \\
 
-\includegraphics[width=15cm]{../pictures/binominial_heap_add.png}
+\includegraphics[width=15cm]{pictures/binominial_heap_add.png}
 
 
 Если у нас есть n чисел, то как мы их поместим в кучу размера $2^k$? $n = 2^{k_1} + 2^{k_2} \dots + 2^{k_m}$. Тогда можем хранить все элементы как кучи рангов $k_1, \dots k_m$. Тогда при merge нужно объединять два списка биномиальных куч (будем делать это 2 указателями по 2 массивам), будем объединять кучи одинаковых рангов \\ %вставить картинку или объяснение
@@ -89,7 +89,7 @@ extract\_min \\
 
 increase\_key: decrease\_key(v, $-\infty$) $\to$ extract\_min $\to$ insert(x). Работает за O($\log n$). \\ 
 
-\includegraphics[width=15cm]{../pictures/binominial_heap.png}
+\includegraphics[width=15cm]{pictures/binominial_heap.png}
 
 \tu{Фибоначчиева куча}: (чет я устал техать, чекайте у Кости)
 
