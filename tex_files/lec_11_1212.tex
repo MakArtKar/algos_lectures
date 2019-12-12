@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция АиСД 12.12}
+
+\begin{document}
+
+\paragraph{Деревья поиска}
+\hspace{\fill}
+Храним структуру данных, которая должна уметь делать все то же самое, что можно делать с отсортированным массивом, но еще с добавлением-удалением.
+
+\paragraph{Binaary search tree (BST)}
+
+Корневое дерево. В вершине храним левого сына, правого сына, предка, ключ.
+
+Обозначения:
+\begin{itemize}
+
+\item $l(v)$ --- левый сын
+
+\item $r(v)$ --- правый сын
+
+\item $p(v)$ --- предок
+
+\item $key(v)$ --- ключ
+
+\item $T(v)$ --- поддерево
+
+\item $S(v) = |T(v)|$ --- размер
+
+\item $A(v)$ --- множество предков
+
+\item $seg(v) = [\min_{u \in T(v)} key(u); \max_{u \in T(v)} key(u)]$
+
+\end{itemize}
+
+Условие BST: 
+
+$$ \forall u \in T(l(v)):\ key(u) < key(v)$$
+
+$$ \forall u \in T(r(v)):\ key(u) > key(v)$$
+
+То есть, ключи лежат в порядке лево-правого обхода (в порядке <<выписать левое поддерево - выписать вершину - выписать правое поддерево>>)
+
+$v \in seg(u) \leftrightarrow v \in T(u)$
+
+Поиск в дереве --- надо сделать спуск. То есть, если текущая вершина --- не та, которая нам нужна, то можно понять, где лежит нужная нам, с помощью условия BST.
+
+Нахождение следующего --- либо спуск вправо, либо подъем по предкам до первого большего.
+
+Основная проблема --- операции вставки/удаления, которые должны делать дерево сбалансированным (таким, высота которого нас устраивает, то есть примерно $\log n$)
+
+\paragraph{Декартово дерево}
+
+У каждой вершины будем хранить не только ключ, но и какой-то приоритет $y$. Построим дерево так, что по $y$ это куча, а по $x$ это BST.
+
+Тогда декартово дерево задается однозначно, если определить все приоритеты. Почему? Расставим точки на плоскости в соответствии с $(x, y)$, после чего найдем корень. У корня будет наименьший приоритет и поэтому он определяется единственным образом (будем считать, что приоритеты различны). Тогда к корню нужно приписать слева и справа по дереву, которые рекурсивно строятся в левой и правых частях.
+
+\textbf{Утверждение} Если взять случайные $y$, то матожидание глубины дерева $O(\log n)$
+
+\textbf{Доказательство:} Нет.
+
+\textbf{Утверждение} Если взять случайные $y$, то матожидание глубины каждой вершины $O(\log n)$
+
+\textbf{Доказательство.} Матожидание высоты вершины --- это число вершин, которые являются ее предками. Вершина $i$ будет предком вершины $j$, если $y_i = \max \{y_i, y_{i+1}, \dots, y_j\}$. Матожидание суммы таких величин для $i$ это $\rangesum{j=0}{i-1} \frac{1}{i-j} + \rangesum{j=i+1}{n-1} \frac{1}{j-i} \le 2 \rangesum{i=1}{n} \frac{1}{i} = O(\log n)$
+
+
+\end{document}
