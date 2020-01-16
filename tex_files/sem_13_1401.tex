@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Семинар 14.01}
+
+\begin{document}
+
+\paragraph{Splay tree.}
+
+Уже пройденные способы балансировки для $BST$, которые у нас были, это способы из ДД (четкая структура и ожидаемая глубина) и 2-3 дерева (гарантированная одинаковая глубина для всех вершин).
+
+Новый способ балансировки --- не напрягаться с балансированием лишний раз, и работать за амортизированное время.
+
+Основной нашей операцией будет $expose(v)$, которая будет превращать вершину $v$ в корень дерева. Условие $BST$ на дереве сохраняется. Эта операция будет поддерживать два типа поворотов: левый и правый. Поворот вершины $v$ возьмет ребро от $v$ к предку $u$, и его <<повернет>> ~--- если $v$ было левым сыном $u$, то $u$ станет правым сыном $v$. При этом правый сын $v$ станет левым сыном $u$. Другой поворот делается симметрично. Вершина $v$ станет ближе к корню дерева. Если применять повороты к $v$, пока можно, то в итоге $v$ станет корнем.
+
+$expose$ будет выполняться после каждой операции, и работать за высоту дерева. Более того, поскольку все остальное тоже работает за высоту дерева, то мы будем оценивать только $expose$.
+
+Каждый раз делать повороты нельзя, потому что будет работать за долго. У нас будет три операции, которые будут поднимать нашу вершину:
+\begin{itemize}
+\item zig
+\item zig-zig
+\item zig-zag
+\end{itemize}
+
+\paragraph{zig.} Самая тупая операция --- если мы сын предка, то делаем поворот. Оставшиеся операции будут поднимать нас сразу на 2.
+
+\paragraph{zig-zig.} Если наш дедушка от нас находится справа-справа или слева-слева, то выполним сначала поворот предка, а потом себя. 
+
+\paragraph{zig-zag.} Иначе мы сначала сделаем поворот себя, а потом поворот предка.
+
+\textit{Лучше порисовать картинки или погуглить визуализацию, потому что иначе будет очень непонятно, что сейчас произошло.}
+
+Также можно выразить $split$ и $merge$ через предыдущие операции.
+
+\paragraph{Потенциал.} Введем $\Phi(t) = \displaystyle \sum_{v \in t} rank(v) = \displaystyle \sum_{v \in t} \log_2 {size(v)}$. Тогда стоимость $expose$ это 
+
+$$\tilde t_e = t_e + \Phi(t') - \Phi(t) \le 3(rank(root) - rank(v)) + 1$$
+
+Воспользуемся $rank(root) - rank(v) = (rank(root) - rank(u_1)) + (rank(u_1) - rank(u_2)) + \dots + (rank(u_n) - rank(v))$ и разложим $expose$ на три операции, и покажем, что они тоже оплачиваются потенциалом.
+
+\end{document}
