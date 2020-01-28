@@ -1,0 +1,103 @@
+\documentclass{article}
+
+\usepackage[top=0.6in, bottom=0.75in, left=0.625in, right=0.625in]{geometry}
+\usepackage{amsmath,amsthm,amssymb,hyperref}
+\usepackage[utf8x]{inputenc}
+\usepackage[russianb]{babel}
+\usepackage{hyperref}
+% \usepackage{minted}
+\usepackage{color}
+\usepackage{fancyhdr}
+
+
+\newcommand{\R}{\mathbb{R}}  
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\tu}[1]{\underline{#1}}
+\newcommand{\tb}[1]{\textbf{#1}}
+\newcommand{\ti}[1]{\textit{#1}}
+\newcommand{\aliq}{\mathrel{\raisebox{-0.5ex}{\vdots}}}
+\newcommand{\mylim}[2]{\lim_{#1 \to #2}}
+\newcommand{\abs}[1]{\left|{#1}\right|}
+\newcommand{\brackets}[1]{\left({#1}\right)}
+\newcommand{\sqbrackets}[1]{\left[{#1}\right]}
+\newcommand{\integral}{{\displaystyle \int}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{claim}[2][Claim]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+\makeatletter
+\newenvironment{sqcases}{%
+  \matrix@check\sqcases\env@sqcases
+}{%
+  \endarray\right.%
+}
+\def\env@sqcases{%
+  \let\@ifnextchar\new@ifnextchar
+  \left\lbrack
+  \def\arraystretch{1.2}%
+  \array{@{}l@{\quad}l@{}}%
+}
+\makeatother
+
+\ifx\pdfoutput\undefined
+\usepackage{graphicx}
+\else
+\usepackage[pdftex]{graphicx}
+\fi
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Макоян Артем, ПМИ 191-1, @MakArtKar, \href{http://github.com/MakArtKar}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/MakArtKar}{\textcolor{blue}{codeforces}}, \href{vk.com/makartkar}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция по алгоритмам 23.01}
+
+\begin{document}
+
+{\Large\tb{Персистентность}} \\
+
+Есть структура данных T и операции. Некоторые операции изменяют T, а некоторые не изменяют. Тогда можно говорить о версиях структуры T в разные моменты времени. \ti{Персистенность} - это свойство структуры данных делать запросы к старым версиям. \\
+
+\tu{Уровни персистентности}:
+
+\begin{itemize}
+
+\item $parital (weak)$ - версии образуют цепочку, то есть каждая следующая версия - это измененная предыдущая (запросы изменения можно делать только к последней версии). \\
+\item $full (strong)$ - версии образуют дерево (запросы изменения можно делать к любой версии). \\
+\item  $fuctional (confluent)$ - поддерживаются операции сразу для нескольких версий (допустим $merge$ для версий декартова дерева). \\
+
+\end{itemize} 
+
+\tb{Персистенный массив}. \\
+
+Для каждой клеточки храним вектор пар $(t_x, v_x)$ - в момент $t_x$ мы изменили этот элемент массива на $v_x$ (храним в порядке возрастания $t_x$). Бинпоиском отвечаем на запрос \ti{узнать значение элемента версии $t$}. \\
+
+Такая персистентность $partial$, но не $full$ и $functional$. \\
+
+
+
+\tb{Pointer machine}. Вместо изменения вершины создаем новую. Еще кучу рисуночков. \\
+
+Full персистентный массив (чет прослушал :( - через pointer machine). \\
+
+
+
+\tb{Персистентное декартово дерево}. \\
+
+Вместо изменения вершины создаем новую.
+
+(дальше кучу рисуночков)
+
+\end{document}
