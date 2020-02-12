@@ -1,0 +1,56 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция АиСД 30.01}
+
+\begin{document}
+
+\paragraph{Meet-in-the-middle.} Пусть нам при решении задачи динамического программирования нужно найти кратчайший путь из $s$ в $t$ на графе вариантов. Перебрать весь граф из вершины $s$ может быть тяжело с точки зрения вычислений. Мы попробуем запустить поиск сразу из двух вершин --- из $s$ в прямую сторону, и из $t$ в обратную. Тогда любая общая вершина для двух наших переборов задает путь из $s$ в $t$.
+
+\paragraph{Subset sum.} Применим данную технику в задаче $subset sum$. Поделим множество предметов на две равные группы. Тогда за $2^{\frac{n}{2}}$ мы можем найти все возможные суммы для каждой из двух групп элементов. Теперь за $O(2^{\frac{n}{2}})$ переберем все суммы $x$ для первой группы, и с помощью хэш-таблицы проверить наличие $S - x$ для второй группы.
+
+\paragraph{Рюкзак.} Примерно то же самое можно сделать для задачи о рюкзаке, только теперь нам понадобится узнавать максимум на префиксе.
+
+\paragraph{Максимальная клика в графе.} Клика --- связный подграф. Мы хотим найти максимальную клику в графе. Разобьем граф на две доли (левую и правую, размерами в пополам). Теперь посчитаем $dp_{submask}$ --- максимальную подклику для подмножества вершин. Тогда, зная пересечение списков смежности по всем подмножествам вершин, мы можем поступать следующим образом: находить клику в левой доли, брать множество ее соседей в правой доле, и смотреть на соответствующее значение $dp$.
+
+\paragraph{Компактность динамики.} Будем считать динамику \textit{компактной} по какому-то из измерений, если для пересчета значений динамики нужно помнить \textit{не очень много} слоев по этому параметру. Например, динамика для НОП будет компактной по обоим параметрам (и там, и там достаточно помнить всего пару слоев).
+
+
+\end{document}
