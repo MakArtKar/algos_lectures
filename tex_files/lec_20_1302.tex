@@ -1,0 +1,68 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[margin=1.5in,left=1cm,right=1cm, top=2cm,bottom=2cm,bindingoffset=0cm]{geometry}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amssymb}
+\usepackage{minted}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{fancyhdr}
+
+
+
+\title{Title}
+\author{Амеличев Константин, ПМИ 191.}
+\date{Date}
+
+\newcommand{\problem}[2]{
+
+\section {Задача #1}
+\textbf {Постановка задачи.} {#2}
+
+\textbf {Решение.}
+}
+
+\newcommand{\limit}[2]{\displaystyle \lim_{#1 \to #2}}
+
+\newcommand{\rangesum}[2]{\displaystyle \sum_{#1}^{#2}}
+
+\newcommand{\mintedparams}{
+% frame=lines
+% framesep=2mm,
+% baselinestretch=1.2,
+% bgcolor=LightGray    
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{Амеличев Константин, ПМИ 191, @kik0s, \href{http://github.com/kik0s}{\textcolor{blue}{github}}, \href{http://codeforces.com/profile/kikos}{\textcolor{blue}{codeforces}}, \href{http://vk.com/i_tried_to_name_myself_kikos}{\textcolor{blue}{vk}}}
+\fancyhead[RE,LO]{Лекция АиСД 13.02}
+
+\begin{document}
+
+\paragraph{DFS.} Алгоритм обхода графа. Каждой вершине присваивается один из трех цветов --- белый, серый или черный. Белые вершины мы еще не рассматривали, серые вершины мы рассматриваем сейчас, черные вершины мы больше не рассматриваем. Алгоритм примерно такой:
+\begin{enumerate}
+\item Покрасить текущую вершину в серый цвет.
+\item Рекурсивно запуститься из всех белых вершин, соединенных с нашей.
+\item Покрасить текущую вершину в красный цвет.
+\end{enumerate}
+
+Что-то из важных утверждений про $dfs$:
+
+\begin{itemize}
+\item Серые вершины образуют путь.
+\item Ребро между двумя серыми несоседними вершинами существует тогда и только тогда, когда в графе есть цикл.
+\item Из черных вершин нет ребер в белые.
+\end{itemize}
+
+\paragraph{Топологическая сортировка.} Пусть у нас есть ориентированный ациклический граф. Давайте выпишем такую перестановку вершин --- $p_v$ будет номером покраски вершины $v$ в черный цвет. Тогда все наши ребра будут идти только справа налево.
+
+\paragraph{Поиск компонент сильной связности и конденсация.} Компонентой сильной связности называем такой класс эквивалентности, гда $v$ и $u$ сильно связаны, если есть пути $u \rightarrow v$ и $v \rightarrow u$. Конденсацией мы назовем такой мета-граф, где все компоненты сильной связности <<сжаты>> в одну вершину, а ребра между новыми компонентами есть, если есть ребра между какой-то парой вершин из этих компонент. Такой граф уже точно будет ацикличным.
+
+Сделаем процедуру, аналогичную топсорту, но теперь у нас ребра уже могут идти слева направо. Про самую последнюю вершину в новом порядке мы знаем, что она точно лежит в компоненте истока. Рассмотрим граф $G'$, построенный на обратных ребрах. Тогда если у нас есть ребро в $G'$ справа налево $u \leftarrow v$, то это значит, что вершины $u$ и $v$ лежат в одной компоненте сильной связности. Тогда мы можем последовательно выделять КСС с помощью обхода по обратным ребрам.
+
+
+
+\end{document}
